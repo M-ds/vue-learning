@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import ReactiveComponent from "@/ReactiveComponent";
 
 // ref =  Reactive references.
 const header = ref("Shopping List App");
@@ -12,6 +13,7 @@ const items = ref([
 const newItem = ref("");
 const newItemHighPriority = ref(false);
 
+// Methods defined
 const saveItem = () => {
   items.value.push({
     id: items.value.length + 1,
@@ -29,6 +31,17 @@ const doEdit = (e) => {
 const togglePurchased = (item) => {
   item.purchased = !item.purchased;
 };
+
+// Computed properties
+const characterCount = computed(() => {
+  return newItem.value.length;
+});
+
+// Keep in mind you should always return something
+const reversedItems = computed(() => {
+  // We don't want to alter the order of the values.
+  return [...items.value].reverse();
+});
 </script>
 
 <template>
@@ -49,11 +62,12 @@ const togglePurchased = (item) => {
     <button class="btn btn-primary" :disabled="newItem.length < 5">
       Save item
     </button>
+    <p class="counter">{{ characterCount }}/200</p>
   </form>
   <ul>
     <li
       @click="togglePurchased(item)"
-      v-for="item in items"
+      v-for="item in reversedItems"
       class="static-class"
       :class="{ strikeout: item.purchased, priority: item.highPriority }"
       :key="item.id"
@@ -62,6 +76,8 @@ const togglePurchased = (item) => {
     </li>
   </ul>
   <p v-if="!items.length">Nothing to see here</p>
+
+  <reactive-component />
 </template>
 
 <style lang="scss">
