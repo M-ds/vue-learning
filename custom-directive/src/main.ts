@@ -3,6 +3,20 @@ import App from "./App.vue";
 
 const app = createApp(App);
 
+/**
+ * Het is mogelijk om directives aan te passen op een lokaal niveau.
+ * Dit kan via de options api. Dus bv
+ * <p>
+ * directives: {
+ *  naamFunctie() {
+ *    beforeMount(el: HTMLElement, binding: DirectiveBinding) {
+ *      el.style.color = "purple";
+ *    }
+ *  }
+ * }
+ * <p>
+ */
+
 app.directive("purple", {
   beforeMount(el: HTMLElement, binding: DirectiveBinding) {
     el.style.color = "purple";
